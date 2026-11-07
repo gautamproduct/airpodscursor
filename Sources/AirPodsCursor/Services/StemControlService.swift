@@ -13,6 +13,12 @@ final class StemControlService {
     private(set) var isActive = false
     private var targets: [(MPRemoteCommand, Any)] = []
     private var lastSinglePress: TimeInterval = 0
+    private var ignoreUntil: TimeInterval = 0
+
+    /// Our own media keys come back through the same commands; don't treat them as presses.
+    func ignoreCommands(for seconds: TimeInterval) {
+        ignoreUntil = ProcessInfo.processInfo.systemUptime + seconds
+    }
 
     /// Presses closer together than this are the same press (macOS can send pause+play).
     static let debounce: TimeInterval = 0.3
@@ -51,6 +57,7 @@ final class StemControlService {
     }
 
     private func handle(_ trigger: Trigger) {
+        guard ProcessInfo.processInfo.systemUptime > ignoreUntil else { return }
         Diagnostics.log.notice("Stem command → \(trigger.rawValue, privacy: .public)")
         if trigger == .stemSingle {
             let now = ProcessInfo.processInfo.systemUptime

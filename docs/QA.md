@@ -5,7 +5,7 @@ Run before each release, with real AirPods. Each line says what to do and what s
 ## AirPods
 
 - [ ] **No AirPods connected.** Menu bar shows "Waiting for AirPods". Nothing moves, nothing clicks.
-- [ ] **Both buds in.** The pointer follows your head within a second of putting them in.
+- [ ] **Both buds in, nothing playing.** The pointer follows your head within a second of putting them in.
 - [ ] **One bud in.** The pointer still follows your head.
 - [ ] **Take one bud out while tracking.** No click happens. The pointer doesn't jump.
 - [ ] **Take both buds out and put them in the case.** No click, no scroll, no gesture. The pointer stops where it was.
@@ -28,7 +28,13 @@ Run before each release, with real AirPods. Each line says what to do and what s
 
 - [ ] **Rest on a button.** A ring fills, then it clicks once. Resting longer doesn't click again.
 - [ ] **Rest on plain text.** Nothing happens.
-- [ ] **Press the stem once.** It clicks after a short beat. Twice: right-click. Three times: scroll mode.
+- [ ] **Default: press the stem while music plays.** It pauses and plays, two presses skip, three go back, exactly as without AirPodsCursor.
+- [ ] **Default: keyboard play/pause key.** Controls music. No click.
+- [ ] **Default: take one bud out while music plays.** Music pauses as usual. No click.
+- [ ] **Default: noise control, Siri and calls.** Unchanged.
+- [ ] **⌃⌥P, ⌃⌥N, ⌃⌥B.** Play/pause, next and previous track in Music and Spotify, tracking on or off.
+- [ ] **Head tilt set to Next Track.** Tilting skips the song once, not twice.
+- [ ] **Turn on Click with stem presses.** A press clicks after a short beat. Twice: right-click. Three times: scroll mode.
 - [ ] **Rest near the bottom of a long article.** It scrolls down, faster closer to the edge. Move to the middle: it stops.
 - [ ] **Rest near the top.** It scrolls up.
 - [ ] **Rest on a browser tab near the top.** It clicks the tab instead of scrolling.

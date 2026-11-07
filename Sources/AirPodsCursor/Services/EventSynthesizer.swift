@@ -64,6 +64,25 @@ final class EventSynthesizer {
         }
     }
 
+    enum MediaKey: Int {
+        // NX_KEYTYPE_* from IOKit/hidsystem/ev_keymap.h
+        case playPause = 16, next = 17, previous = 18
+    }
+
+    /// Presses a media key (like F8 / F9 / F7), so whatever is playing responds.
+    func mediaKey(_ key: MediaKey) {
+        for down in [true, false] {
+            let state = down ? 0xA : 0xB
+            guard let event = NSEvent.otherEvent(
+                with: .systemDefined, location: .zero,
+                modifierFlags: NSEvent.ModifierFlags(rawValue: UInt(state << 8)),
+                timestamp: 0, windowNumber: 0, context: nil,
+                subtype: 8, data1: (key.rawValue << 16) | (state << 8), data2: -1
+            ) else { continue }
+            event.cgEvent?.post(tap: .cghidEventTap)
+        }
+    }
+
     private static func types(for button: CGMouseButton) -> (CGEventType, CGEventType) {
         switch button {
         case .left: (.leftMouseDown, .leftMouseUp)

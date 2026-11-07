@@ -54,6 +54,7 @@ public enum PointerAction: String, Codable, CaseIterable, Identifiable, Sendable
     case missionControl, appWindows, previousSpace, nextSpace
     case back, forward
     case screenshot
+    case playPause, nextTrack, previousTrack
 
     public var id: String { rawValue }
 
@@ -75,6 +76,9 @@ public enum PointerAction: String, Codable, CaseIterable, Identifiable, Sendable
         case .back: "Back"
         case .forward: "Forward"
         case .screenshot: "Screenshot"
+        case .playPause: "Play/Pause"
+        case .nextTrack: "Next Track"
+        case .previousTrack: "Previous Track"
         }
     }
 
@@ -91,6 +95,7 @@ public enum PointerAction: String, Codable, CaseIterable, Identifiable, Sendable
         ("", [.none]),
         ("Mouse", [.leftClick, .rightClick, .doubleClick, .middleClick, .toggleDrag]),
         ("AirPodsCursor", [.toggleScrollMode, .toggleTracking, .recenter]),
+        ("Media", [.playPause, .nextTrack, .previousTrack]),
         ("System", [.missionControl, .appWindows, .previousSpace, .nextSpace, .back, .forward, .screenshot]),
     ]
 }

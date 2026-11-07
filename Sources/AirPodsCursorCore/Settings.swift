@@ -97,7 +97,7 @@ public struct DwellSettings: Codable, Equatable, Sendable {
 
 public struct AppSettings: Codable, Equatable, Sendable {
     /// Bumped when defaults change in a way existing users should receive.
-    public static let currentVersion = 3
+    public static let currentVersion = 4
     public var version: Int = AppSettings.currentVersion
 
     public var pointer = PointerSettings()
@@ -106,8 +106,9 @@ public struct AppSettings: Codable, Equatable, Sendable {
     /// Rest near the bottom/top of the screen to scroll while reading.
     public var readingScroll = ReadingScrollSettings()
     public var actions = ActionMap()
-    /// Listen for AirPods stem presses (play/pause, next, previous).
-    public var stemControlsEnabled: Bool = true
+    /// Use AirPods stem presses for clicks while head tracking is on. Off by default,
+    /// so the AirPods buttons keep playing, pausing and skipping music as usual.
+    public var stemControlsEnabled: Bool = false
     /// Play an inaudible stream so macOS routes AirPods presses to AirPodsCursor.
     public var keepAudioRouteActive: Bool = true
     /// Make the AirPods the Mac's sound output when tracking starts. AirPods only
@@ -151,6 +152,11 @@ extension AppSettings {
             // v3: shake needs bigger, repeated swings so glancing around never pauses.
             s.gestures.shakeAmplitude = GestureSettings().shakeAmplitude
             s.gestures.shakeWindow = GestureSettings().shakeWindow
+        }
+        if s.version < 4 {
+            // v4: AirPods work as usual by default. Stem presses go back to your music
+            // (and media keys stay yours); using them for clicks is opt-in.
+            s.stemControlsEnabled = false
         }
         s.version = AppSettings.currentVersion
         return s

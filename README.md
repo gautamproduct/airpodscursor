@@ -37,6 +37,9 @@ Reading an article? Rest near the bottom of the screen and the page scrolls down
 ### Turn on or off
 Shake your head. A sound tells you which way it went.
 
+### Everything else, as usual
+Your AirPods keep doing what they do. Press to play, pause and skip. Noise control, Siri, calls and spatial audio don't change. AirPodsCursor only adds.
+
 ### Private
 No camera. No network. No analytics. Motion data never leaves your Mac.
 
@@ -59,10 +62,11 @@ No camera. No network. No analytics. Motion data never leaves your Mac.
 | Rest near the bottom or top | Scrolls the page |
 | Shake | Turns head tracking on or off |
 | Nod | Clicks |
-| Press the stem once, twice, three times | Click, right-click, scroll mode |
-| Tilt left or right | Off by default. Assign Back, Forward, Mission Control and more |
+| Press the stem | Plays, pauses and skips music, as usual. Clicking with it is optional |
+| Tilt left or right | Off by default. Assign Next Track, Back, Mission Control and more |
 
-Keyboard: **⌃⌥T** on or off · **⌃⌥S** scroll mode · **⌃⌥C** center pointer · **⌃⌥D** drag lock.
+Keyboard: **⌃⌥T** on or off · **⌃⌥S** scroll mode · **⌃⌥C** center pointer · **⌃⌥D** drag lock
+Music: **⌃⌥P** play/pause · **⌃⌥N** next track · **⌃⌥B** previous track
 
 Everything can be changed in **Settings**, from the menu bar.
 
@@ -74,13 +78,9 @@ Everything can be changed in **Settings**, from the menu bar.
 
 **Something else.** Open **Settings › General › Diagnostics**. It shows which step is failing, and **Copy Diagnostics** gives you a report to attach to an issue.
 
-**Stem presses play my music instead.** Another app may be playing. Head gestures always work.
-
-**My keyboard's play/pause key clicks.** While head tracking is on, AirPodsCursor answers play/pause the same way it answers a stem press. Shake to turn tracking off, or turn off stem presses in **Settings › Clicking**.
+**I want the stem to click.** Turn on **Click with stem presses** in **Settings › Clicking**. While head tracking is on, a press clicks, two right-click, three switch to scroll mode, and the play/pause keys click too. Use **⌃⌥P**, **⌃⌥N** and **⌃⌥B** for music.
 
 **The pointer drifts in a car, train or while walking.** AirPods feel the vehicle turn as well as your head. Shake to turn tracking off until you're settled.
-
-**Taking out an AirPod clicks.** Removing one sends "pause". Shake to turn tracking off first, or turn off Automatic Ear Detection.
 
 ## Build from source
 

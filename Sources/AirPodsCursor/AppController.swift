@@ -397,7 +397,9 @@ final class AppController: ObservableObject {
         }
 
         // Keep the AirPods the active audio route while we need their sensors or presses.
-        if settings.keepAudioRouteActive, wantMotion || stemNeeded, headphoneOutputAvailable {
+        // Only needed to receive stem presses (macOS sends them to whatever is "playing").
+        // Off by default, so nothing plays and the AirPods behave exactly as usual.
+        if settings.keepAudioRouteActive, stemNeeded, headphoneOutputAvailable {
             keepAlive.start()
         } else {
             keepAlive.stop()
@@ -891,6 +893,8 @@ final class AppController: ObservableObject {
             smoother.reset()
             gestures.resetTiltBaseline()
             toast("Pointer Centered", symbol: "scope")
+        case .playPause, .nextTrack, .previousTrack:
+            playMedia(action)
         case .missionControl, .appWindows, .previousSpace, .nextSpace, .back, .forward, .screenshot:
             if let shortcut = action.keyShortcut {
                 synth.keyStroke(shortcut.key, flags: shortcut.flags)
@@ -898,6 +902,18 @@ final class AppController: ObservableObject {
             }
         }
         if action.isClick { dwell.reset() }
+    }
+
+    private func playMedia(_ action: PointerAction) {
+        let key: EventSynthesizer.MediaKey
+        switch action {
+        case .nextTrack: key = .next
+        case .previousTrack: key = .previous
+        default: key = .playPause
+        }
+        stem.ignoreCommands(for: 0.6)
+        synth.mediaKey(key)
+        toast(action.displayName, symbol: action.symbol)
     }
 
     private func beginDrag(at point: CGPoint) {
@@ -939,6 +955,13 @@ final class AppController: ObservableObject {
         }
         hotKeys.register(id: HotKey.recenter.id, keyCode: HotKey.recenter.keyCode, modifiers: mods) { [weak self] in
             self?.recenterNow()
+        }
+        for (key, action) in [(HotKey.playPause, PointerAction.playPause), (.nextTrack, .nextTrack), (.previousTrack, .previousTrack)] {
+            hotKeys.register(id: key.id, keyCode: key.keyCode, modifiers: mods) { [weak self] in
+                guard let self else { return }
+                guard self.accessibilityTrusted else { self.toast("Allow Accessibility in Settings", symbol: "lock.fill"); return }
+                self.playMedia(action)
+            }
         }
         hotKeys.register(id: HotKey.drag.id, keyCode: HotKey.drag.keyCode, modifiers: mods) { [weak self] in
             guard let self, self.trackingEnabled, self.accessibilityTrusted else { return }
@@ -1002,6 +1025,9 @@ extension PointerAction {
         case .back: "chevron.backward"
         case .forward: "chevron.forward"
         case .screenshot: "camera.viewfinder"
+        case .playPause: "playpause.fill"
+        case .nextTrack: "forward.fill"
+        case .previousTrack: "backward.fill"
         }
     }
 }

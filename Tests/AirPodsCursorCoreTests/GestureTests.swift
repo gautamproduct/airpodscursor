@@ -286,6 +286,33 @@ final class SettingsTests: XCTestCase {
         XCTAssertFalse(s.dwell.enabled)   // a v2 user's own hover-click choice is kept
     }
 
+    func testAirPodsButtonsWorkAsUsualByDefault() throws {
+        XCTAssertFalse(AppSettings().stemControlsEnabled)
+        let v3 = #"{"version":3,"stemControlsEnabled":true,"pointer":{"sensitivity":2}}"#
+        let s = try JSONDecoder().decode(AppSettings.self, from: Data(v3.utf8)).migrated()
+        XCTAssertFalse(s.stemControlsEnabled)
+        XCTAssertEqual(s.pointer.sensitivity, 2)
+        XCTAssertEqual(s.version, AppSettings.currentVersion)
+    }
+
+    func testOptedInStemPressesSurviveRelaunch() throws {
+        var s = AppSettings()
+        s.stemControlsEnabled = true
+        let data = try JSONEncoder().encode(s)
+        XCTAssertTrue(try JSONDecoder().decode(AppSettings.self, from: data).migrated().stemControlsEnabled)
+    }
+
+    func testMediaActionsAreNotClicksAndRoundTrip() throws {
+        for a in [PointerAction.playPause, .nextTrack, .previousTrack] {
+            XCTAssertFalse(a.isClick)
+            var m = ActionMap()
+            m[.tiltRight] = a
+            let back = try JSONDecoder().decode(ActionMap.self, from: JSONEncoder().encode(m))
+            XCTAssertEqual(back[.tiltRight], a)
+        }
+        XCTAssertTrue(PointerAction.groups.contains { $0.title == "Media" })
+    }
+
     func testCurrentSettingsAreNotReMigrated() throws {
         var s = AppSettings()
         s.dwell.enabled = false

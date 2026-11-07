@@ -258,7 +258,10 @@ struct ClickingSettingsView: View {
             }
 
             Section {
-                Toggle("Use AirPods stem presses", isOn: $controller.settings.stemControlsEnabled)
+                Toggle(isOn: $controller.settings.stemControlsEnabled) {
+                    Text("Click with stem presses")
+                    Text("Off: your AirPods buttons play, pause and skip music as usual.")
+                }
                 if controller.settings.stemControlsEnabled {
                     ForEach([Trigger.stemSingle, .stemDouble, .stemTriple]) { trigger in
                         ActionPicker(trigger: trigger, action: binding(trigger))
@@ -267,7 +270,9 @@ struct ClickingSettingsView: View {
             } header: {
                 Text("Stem")
             } footer: {
-                Text("While head tracking is on, stem presses control the pointer instead of your music.")
+                Text(controller.settings.stemControlsEnabled
+                     ? "While head tracking is on, stem presses click instead of controlling music, and so do the play/pause keys. Use \(HotKey.playPause.display), \(HotKey.nextTrack.display) and \(HotKey.previousTrack.display) for music."
+                     : "Music shortcuts: \(HotKey.playPause.display) play/pause, \(HotKey.nextTrack.display) next, \(HotKey.previousTrack.display) previous. You can also set a head tilt to skip tracks in Head Gestures.")
             }
         }
         .formStyle(.grouped)
