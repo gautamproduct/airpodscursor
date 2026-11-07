@@ -575,7 +575,6 @@ final class AppController: ObservableObject {
             if trackingEnabled { routeAudioToHeadphonesIfNeeded() }
             differentiator.reset()
             gestures.resetTiltBaseline()
-            toast("AirPods Connected", symbol: "airpodspro")
         } else {
             motionStreaming = false
             smoother.reset()
@@ -584,7 +583,6 @@ final class AppController: ObservableObject {
             releaseButtons()
             cancelPendingStemClick(reason: "headphones disconnected")
             updateFrameTimer()
-            if trackingEnabled { toast("AirPods Disconnected", symbol: "airpodspro") }
         }
     }
 
